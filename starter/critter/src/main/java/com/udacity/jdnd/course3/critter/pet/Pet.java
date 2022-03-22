@@ -1,9 +1,13 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import com.udacity.jdnd.course3.critter.schedule.Schedule;
 import com.udacity.jdnd.course3.critter.user.Customer;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="pet")
@@ -30,17 +34,31 @@ public class Pet {
     @JoinColumn(name = "customer_customer_id")
     private Customer customer;
 
+    @Column(name="availability")
+    private Set<DayOfWeek> availability = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "pet_schedule",
+            joinColumns = @JoinColumn(name = "pet_pet_id"),
+            inverseJoinColumns = @JoinColumn(name = "schedule_schedule_id"))
+    private Schedule schedule;
+
+
+
+
     public Pet() {
     }
 
-    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer) {
+    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Set<DayOfWeek> availability) {
         this.petId = petId;
         this.type = type;
         this.name = name;
         this.birthDate = birthDate;
         this.notes = notes;
         this.customer = customer;
+        this.availability = availability;
     }
+
 
     public Long getPetId() {
         return petId;
@@ -88,5 +106,21 @@ public class Pet {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Set<DayOfWeek> getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Set<DayOfWeek> availability) {
+        this.availability = availability;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 }

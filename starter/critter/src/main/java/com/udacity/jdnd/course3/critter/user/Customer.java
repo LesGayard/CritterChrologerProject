@@ -31,19 +31,17 @@ public class Customer {
     @OneToMany(mappedBy="customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Pet> pets = new ArrayList<>();
 
-    @Column(name="availability")
-    private Set<DayOfWeek> availability = new HashSet<>();
+
 
     public Customer() {
     }
 
-    public Customer(Long customerId, String name, String phoneNumber, String notes, List<Pet> pets, Set<DayOfWeek> availability) {
+    public Customer(Long customerId, String name, String phoneNumber, String notes, List<Pet> pets) {
         this.customerId = customerId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.notes = notes;
         this.pets = pets;
-        this.availability = availability;
     }
 
     public Long getCustomerId() {
@@ -86,11 +84,4 @@ public class Customer {
         this.pets = pets;
     }
 
-    public Set<DayOfWeek> getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(Set<DayOfWeek> availability) {
-        this.availability = availability;
-    }
 }

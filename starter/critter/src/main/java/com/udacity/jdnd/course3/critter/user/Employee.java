@@ -1,5 +1,7 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.schedule.Schedule;
+
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.util.HashSet;
@@ -21,6 +23,12 @@ public class Employee {
 
     @Column(name="availability")
     private Set<DayOfWeek>availability= new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "schedule_schedule_id", unique = true)
+    private Schedule schedule;
+
+
 
     public Employee() {
     }
@@ -62,5 +70,13 @@ public class Employee {
 
     public void setAvailability(Set<DayOfWeek> availability) {
         this.availability = availability;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 }
