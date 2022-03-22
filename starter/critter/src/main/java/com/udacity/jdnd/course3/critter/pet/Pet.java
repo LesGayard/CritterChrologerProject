@@ -1,12 +1,15 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import com.udacity.jdnd.course3.critter.schedule.Availability;
 import com.udacity.jdnd.course3.critter.schedule.Schedule;
 import com.udacity.jdnd.course3.critter.user.Customer;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,8 +37,6 @@ public class Pet {
     @JoinColumn(name = "customer_customer_id")
     private Customer customer;
 
-    @Column(name="availability")
-    private Set<DayOfWeek> availability = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "pet_schedule",
@@ -43,22 +44,23 @@ public class Pet {
             inverseJoinColumns = @JoinColumn(name = "schedule_schedule_id"))
     private Schedule schedule;
 
-
+    @OneToMany(mappedBy = "pet")
+    private Set<Availability>available = new HashSet<>();
 
 
     public Pet() {
     }
 
-    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Set<DayOfWeek> availability) {
+    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Schedule schedule, Set<Availability> available) {
         this.petId = petId;
         this.type = type;
         this.name = name;
         this.birthDate = birthDate;
         this.notes = notes;
         this.customer = customer;
-        this.availability = availability;
+        this.schedule = schedule;
+        this.available = available;
     }
-
 
     public Long getPetId() {
         return petId;
@@ -108,13 +110,6 @@ public class Pet {
         this.customer = customer;
     }
 
-    public Set<DayOfWeek> getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(Set<DayOfWeek> availability) {
-        this.availability = availability;
-    }
 
     public Schedule getSchedule() {
         return schedule;
@@ -122,5 +117,13 @@ public class Pet {
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    public Set<Availability> getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Set<Availability> available) {
+        this.available = available;
     }
 }

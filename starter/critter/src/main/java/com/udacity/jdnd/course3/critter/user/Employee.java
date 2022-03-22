@@ -1,10 +1,13 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.schedule.Availability;
 import com.udacity.jdnd.course3.critter.schedule.Schedule;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,27 +21,18 @@ public class Employee {
     @Column(name="name")
     private String name;
 
-    @Column(name="skills")
-    private Set<EmployeeSkill>skills = new HashSet<>();
-
-    @Column(name="availability")
-    private Set<DayOfWeek>availability= new HashSet<>();
-
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "schedule_schedule_id", unique = true)
+    @JoinColumn(name = "schedule_schedule_id")
     private Schedule schedule;
 
+    @OneToMany
+    private Set<Availability>employeeAvailable = new HashSet<>();
 
+    @OneToMany
+    private List<Skills> skills = new ArrayList<>();
 
-    public Employee() {
-    }
+    public Employee() {}
 
-    public Employee(long employeeId, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> availability) {
-        this.employeeId = employeeId;
-        this.name = name;
-        this.skills = skills;
-        this.availability = availability;
-    }
 
     public long getEmployeeId() {
         return employeeId;
@@ -56,27 +50,19 @@ public class Employee {
         this.name = name;
     }
 
-    public Set<EmployeeSkill> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(Set<EmployeeSkill> skills) {
-        this.skills = skills;
-    }
-
-    public Set<DayOfWeek> getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(Set<DayOfWeek> availability) {
-        this.availability = availability;
-    }
-
     public Schedule getSchedule() {
         return schedule;
     }
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    public Set<Availability> getAvailable() {
+        return employeeAvailable;
+    }
+
+    public void setAvailable(Set<Availability> employeeAvailable) {
+        this.employeeAvailable = employeeAvailable;
     }
 }
