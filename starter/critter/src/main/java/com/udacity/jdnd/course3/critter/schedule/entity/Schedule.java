@@ -1,11 +1,11 @@
 package com.udacity.jdnd.course3.critter.schedule.entity;
 
-import com.udacity.jdnd.course3.critter.pet.entity.Pet;
-import com.udacity.jdnd.course3.critter.user.entity.Employee;
 
 import javax.persistence.*;
 import java.util.*;
 
+
+/* Schedules that indicate one or more employees will be meeting one or more pets to perform one or more activities on a specific day */
 @Entity
 @Table(name="schedule")
 public class Schedule {
