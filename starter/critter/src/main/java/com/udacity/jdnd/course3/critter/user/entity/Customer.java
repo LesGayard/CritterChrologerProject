@@ -1,14 +1,11 @@
-package com.udacity.jdnd.course3.critter.user;
+package com.udacity.jdnd.course3.critter.user.entity;
 
-import com.udacity.jdnd.course3.critter.pet.Pet;
+import com.udacity.jdnd.course3.critter.pet.entity.Pet;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="customer")
@@ -82,6 +79,15 @@ public class Customer {
 
     public void setPets(List<Pet> pets) {
         this.pets = pets;
+    }
+
+    /* HELPER METHODS */
+    public void addPet (Pet pet){
+        this.pets.add(pet);
+    }
+
+    public void removePet(Pet pet){
+        this.pets.remove(pet.getPetId());
     }
 
 }

@@ -1,16 +1,14 @@
-package com.udacity.jdnd.course3.critter.pet;
+package com.udacity.jdnd.course3.critter.pet.entity;
 
-import com.udacity.jdnd.course3.critter.schedule.Availability;
-import com.udacity.jdnd.course3.critter.schedule.Schedule;
-import com.udacity.jdnd.course3.critter.user.Customer;
-
+import com.udacity.jdnd.course3.critter.pet.PetType;
+import com.udacity.jdnd.course3.critter.schedule.entity.Schedule;
+import com.udacity.jdnd.course3.critter.user.entity.Customer;
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
 
 @Entity
 @Table(name="pet")
@@ -20,6 +18,7 @@ public class Pet {
     @Column(name="pet_id")
     private Long petId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="type")
     private PetType type;
 
@@ -38,28 +37,22 @@ public class Pet {
     private Customer customer;
 
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "pet_schedule",
-            joinColumns = @JoinColumn(name = "pet_pet_id"),
-            inverseJoinColumns = @JoinColumn(name = "schedule_schedule_id"))
-    private Schedule schedule;
-
-    @OneToMany(mappedBy = "pet")
-    private Set<Availability>available = new HashSet<>();
-
+    @ElementCollection
+    @CollectionTable(name="available_days", joinColumns = @JoinColumn(name="pet_id"))
+    @Column(name="pet_available_days")
+    private Set<DayOfWeek> days = new HashSet<>();
 
     public Pet() {
     }
 
-    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Schedule schedule, Set<Availability> available) {
+    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Set<DayOfWeek> days) {
         this.petId = petId;
         this.type = type;
         this.name = name;
         this.birthDate = birthDate;
         this.notes = notes;
         this.customer = customer;
-        this.schedule = schedule;
-        this.available = available;
+        this.days = days;
     }
 
     public Long getPetId() {
@@ -110,20 +103,11 @@ public class Pet {
         this.customer = customer;
     }
 
-
-    public Schedule getSchedule() {
-        return schedule;
+    public Set<DayOfWeek> getDays() {
+        return days;
     }
 
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
-
-    public Set<Availability> getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(Set<Availability> available) {
-        this.available = available;
+    public void setDays(Set<DayOfWeek> days) {
+        this.days = days;
     }
 }
