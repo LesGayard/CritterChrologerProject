@@ -1,8 +1,5 @@
-package com.udacity.jdnd.course3.critter.pet.entity;
+package com.udacity.jdnd.course3.critter.model;
 
-import com.udacity.jdnd.course3.critter.pet.PetType;
-import com.udacity.jdnd.course3.critter.schedule.entity.Schedule;
-import com.udacity.jdnd.course3.critter.user.entity.Customer;
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -42,10 +39,14 @@ public class Pet {
     @Column(name="pet_available_days")
     private Set<DayOfWeek> days = new HashSet<>();
 
+
+    @OneToMany(targetEntity = Schedule.class, mappedBy = "pet")
+    private Schedule schedule;
+
     public Pet() {
     }
 
-    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Set<DayOfWeek> days) {
+    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Set<DayOfWeek> days, Schedule schedule) {
         this.petId = petId;
         this.type = type;
         this.name = name;
@@ -53,6 +54,7 @@ public class Pet {
         this.notes = notes;
         this.customer = customer;
         this.days = days;
+        this.schedule = schedule;
     }
 
     public Long getPetId() {
@@ -110,4 +112,13 @@ public class Pet {
     public void setDays(Set<DayOfWeek> days) {
         this.days = days;
     }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
 }
+

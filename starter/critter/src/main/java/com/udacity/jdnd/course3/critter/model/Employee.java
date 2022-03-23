@@ -1,10 +1,11 @@
-package com.udacity.jdnd.course3.critter.user.entity;
+package com.udacity.jdnd.course3.critter.model;
 
 
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,19 +26,30 @@ public class Employee {
     private Set <EmployeeSkill> skills = new HashSet<>();
 
     @ElementCollection
-    @CollectionTable(name="available_days", joinColumns = @JoinColumn(name="employee_id"))
+    @CollectionTable(name="available_days", joinColumns = {@JoinColumn(name="employee_id"), @JoinColumn(name="schedule_id")})
     @Column(name="employee_available_days")
     private Set<DayOfWeek> days = new HashSet<>();
 
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "schedule_employee",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "schedule_id"))
+    private List<Schedule> schedules = new ArrayList<>();
+
+
+
     public Employee() {}
 
-    public Employee(long employeeId, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> days) {
+    public Employee(long employeeId, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> days, List<Schedule> schedules) {
         this.employeeId = employeeId;
         this.name = name;
         this.skills = skills;
         this.days = days;
+        this.schedules = schedules;
     }
+
+
 
     public long getEmployeeId() {
         return employeeId;
@@ -70,4 +82,13 @@ public class Employee {
     public void setDays(Set<DayOfWeek> days) {
         this.days = days;
     }
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
+    }
+
 }
