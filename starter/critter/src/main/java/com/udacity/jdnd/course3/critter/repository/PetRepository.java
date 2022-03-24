@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PetRepository extends CrudRepository<Pet,Long> {
+
+    /* CREATE A PET FOR A NEWLY CREATED CUSTOMER */
+    public Pet save(Pet pet);
 }
