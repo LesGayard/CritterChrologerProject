@@ -46,6 +46,8 @@ public class Pet {
     @Column(name="pet_schedules")
     private List<Schedule> schedule = new ArrayList<>();
 
+
+
     public Pet() {
     }
 
@@ -59,6 +61,8 @@ public class Pet {
         this.days = days;
         this.schedule = schedule;
     }
+
+
 
     public Long getPetId() {
         return petId;

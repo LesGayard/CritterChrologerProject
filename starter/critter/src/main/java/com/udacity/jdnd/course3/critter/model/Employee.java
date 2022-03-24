@@ -37,13 +37,7 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "schedule_id"))
     private List<Schedule> schedules = new ArrayList<>();
 
-    public List<Schedule> getSchedules() {
-        return schedules;
-    }
 
-    public void setSchedules(List<Schedule> schedules) {
-        this.schedules = schedules;
-    }
 
 
     public Employee() {}
@@ -54,6 +48,8 @@ public class Employee {
         this.skills = skills;
         this.days = days;
     }
+
+
 
     public long getEmployeeId() {
         return employeeId;
@@ -87,6 +83,12 @@ public class Employee {
         this.days = days;
     }
 
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
 
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
+    }
 
 }

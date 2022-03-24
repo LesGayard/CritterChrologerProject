@@ -16,6 +16,11 @@ public class Schedule {
     @Column(name="schedule_id")
     private Long scheduleId;
 
+    @ElementCollection
+    @CollectionTable(name="available_days", joinColumns = @JoinColumn(name="schedule_id"))
+    @Column(name="schedule_available_days")
+    private Set<DayOfWeek> days = new HashSet<>();
+
     /*@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "schedule_pet",
             joinColumns = {@JoinColumn(name = "schedule_id")},
@@ -29,29 +34,28 @@ public class Schedule {
     private List<Employee> employees = new ArrayList<>();
 
 
-    @Column(name="appointment")
-    private Date appointment;
-
-    @ElementCollection
-    @CollectionTable(name="available_days", joinColumns = @JoinColumn(name="schedule_id"))
-    @Column(name="schedule_available_days")
-    private Set<DayOfWeek> days = new HashSet<>();
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pet_id")
     private Pet pet;
+
+    @Column(name="appointment")
+    private Date appointment;
+
 
     /*@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="employee_id")
     private Employee employee;*/
 
-
-
-
     public Schedule() {
     }
 
-
+    public Schedule(Long scheduleId, Set<DayOfWeek> days, List<Employee> employees, Pet pet, Date appointment) {
+        this.scheduleId = scheduleId;
+        this.days = days;
+        this.employees = employees;
+        this.pet = pet;
+        this.appointment = appointment;
+    }
 
     public Long getScheduleId() {
         return scheduleId;
