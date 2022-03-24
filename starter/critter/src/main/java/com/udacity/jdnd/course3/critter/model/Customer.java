@@ -24,22 +24,22 @@ public class Customer {
     private String notes;
 
 
-    @Column(name="customer_pets")
-    @OneToMany(targetEntity = Pet.class)
+
+    @OneToOne(targetEntity = Pet.class)
     @JoinColumn(name="pet_id")
-    private List<Pet> pets = new ArrayList<>();
+    private Pet pet;
 
 
 
     public Customer() {
     }
 
-    public Customer(Long customerId, String name, String phoneNumber, String notes, List<Pet> pets) {
+    public Customer(Long customerId, String name, String phoneNumber, String notes, Pet pet) {
         this.customerId = customerId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.notes = notes;
-        this.pets = pets;
+        this.pet = pet;
     }
 
     public Long getCustomerId() {
@@ -74,21 +74,14 @@ public class Customer {
         this.notes = notes;
     }
 
-    public List<Pet> getPets() {
-        return pets;
+    public Pet getPet() {
+        return this.pet;
     }
 
-    public void setPets(List<Pet> pets) {
-        this.pets = pets;
+    public void setPet(Pet pet) {
+        this.pet = pet;
     }
 
-    /* HELPER METHODS */
-    public void addPet (Pet pet){
-        this.pets.add(pet);
-    }
 
-    public void removePet(Pet pet){
-        this.pets.remove(pet.getPetId());
-    }
 
 }
