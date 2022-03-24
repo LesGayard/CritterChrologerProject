@@ -23,8 +23,10 @@ public class Customer {
     @Column(name="notes", length=255)
     private String notes;
 
-    @OneToMany(mappedBy="customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
     @Column(name="customer_pets")
+    @OneToMany(targetEntity = Pet.class)
+    @JoinColumn(name="pet_id")
     private List<Pet> pets = new ArrayList<>();
 
 

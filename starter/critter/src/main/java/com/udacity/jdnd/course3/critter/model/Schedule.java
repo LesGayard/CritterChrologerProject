@@ -34,6 +34,7 @@ public class Schedule {
     private List<Employee> employees = new ArrayList<>();
 
 
+    @Embedded
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pet_id")
     private Pet pet;
