@@ -1,8 +1,6 @@
 package com.udacity.jdnd.course3.critter.model;
 
-import com.udacity.jdnd.course3.critter.model.Pet;
 import org.hibernate.annotations.Nationalized;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +24,7 @@ public class Customer {
     private String notes;
 
     @OneToMany(mappedBy="customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(name="customer_pets")
     private List<Pet> pets = new ArrayList<>();
 
 

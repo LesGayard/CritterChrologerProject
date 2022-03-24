@@ -15,13 +15,13 @@ public class Schedule {
     @Column(name="schedule_id")
     private Long scheduleId;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    /*@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "schedule_pet",
             joinColumns = {@JoinColumn(name = "schedule_id")},
             inverseJoinColumns = {@JoinColumn(name = "pet_id")})
-    private Pet pet;
+    private List<Pet>pets = new ArrayList<>();*/
 
-    @ManyToMany(targetEntity = Employee.class,mappedBy = "schedule")
+    @ManyToMany(targetEntity = Employee.class)
     @JoinTable(name = "schedule_employee",
             joinColumns = @JoinColumn(name = "schedule_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
@@ -31,16 +31,20 @@ public class Schedule {
     @Column(name="appointment")
     private Date appointment;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
+
+    /*@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="employee_id")
+    private Employee employee;*/
+
+
+
 
     public Schedule() {
     }
 
-    public Schedule(Long scheduleId, Pet pet, List<Employee> employees, Date appointment) {
-        this.scheduleId = scheduleId;
-        this.pet = pet;
-        this.employees = employees;
-        this.appointment = appointment;
-    }
 
     public Long getScheduleId() {
         return scheduleId;
@@ -50,21 +54,6 @@ public class Schedule {
         this.scheduleId = scheduleId;
     }
 
-    public Pet getPet() {
-        return pet;
-    }
-
-    public void setPet(Pet pet) {
-        this.pet = pet;
-    }
-
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
 
     public Date getAppointment() {
         return appointment;
@@ -72,5 +61,13 @@ public class Schedule {
 
     public void setAppointment(Date appointment) {
         this.appointment = appointment;
+    }
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
     }
 }

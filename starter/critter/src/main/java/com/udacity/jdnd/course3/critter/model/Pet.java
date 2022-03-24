@@ -3,7 +3,9 @@ package com.udacity.jdnd.course3.critter.model;
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -30,7 +32,7 @@ public class Pet {
 
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_customer_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
 
@@ -40,13 +42,14 @@ public class Pet {
     private Set<DayOfWeek> days = new HashSet<>();
 
 
-    @OneToMany(targetEntity = Schedule.class, mappedBy = "pet")
-    private Schedule schedule;
+    @OneToMany( mappedBy = "pet")
+    @Column(name="pet_schedules")
+    private List<Schedule> schedule = new ArrayList<>();
 
     public Pet() {
     }
 
-    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Set<DayOfWeek> days, Schedule schedule) {
+    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Set<DayOfWeek> days, List<Schedule> schedule) {
         this.petId = petId;
         this.type = type;
         this.name = name;
@@ -113,11 +116,11 @@ public class Pet {
         this.days = days;
     }
 
-    public Schedule getSchedule() {
+    public List<Schedule> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(Schedule schedule) {
+    public void setSchedule(List<Schedule> schedule) {
         this.schedule = schedule;
     }
 }

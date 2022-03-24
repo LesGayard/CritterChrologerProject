@@ -14,42 +14,46 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="employee_id")
     private long employeeId;
 
     @Column(name="name")
     private String name;
 
-    @ElementCollection(targetClass = EmployeeSkill.class)
+   @ElementCollection(targetClass = EmployeeSkill.class)
     @CollectionTable(name = "employee_skill", joinColumns = @JoinColumn(name = "employee_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "skills")
     private Set <EmployeeSkill> skills = new HashSet<>();
 
     @ElementCollection
-    @CollectionTable(name="available_days", joinColumns = {@JoinColumn(name="employee_id"), @JoinColumn(name="schedule_id")})
+    @CollectionTable(name="available_days", joinColumns = {@JoinColumn(name="employee_id")})
     @Column(name="employee_available_days")
     private Set<DayOfWeek> days = new HashSet<>();
 
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "schedule_employee",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "schedule_id"))
     private List<Schedule> schedules = new ArrayList<>();
 
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
 
-
-    public Employee() {}
-
-    public Employee(long employeeId, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> days, List<Schedule> schedules) {
-        this.employeeId = employeeId;
-        this.name = name;
-        this.skills = skills;
-        this.days = days;
+    public void setSchedules(List<Schedule> schedules) {
         this.schedules = schedules;
     }
 
 
+    public Employee() {}
+
+    public Employee(long employeeId, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> days) {
+        this.employeeId = employeeId;
+        this.name = name;
+        this.skills = skills;
+        this.days = days;
+    }
 
     public long getEmployeeId() {
         return employeeId;
@@ -83,12 +87,6 @@ public class Employee {
         this.days = days;
     }
 
-    public List<Schedule> getSchedules() {
-        return schedules;
-    }
 
-    public void setSchedules(List<Schedule> schedules) {
-        this.schedules = schedules;
-    }
 
 }
