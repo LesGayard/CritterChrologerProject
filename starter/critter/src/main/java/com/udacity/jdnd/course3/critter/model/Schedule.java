@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.model;
 
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.util.*;
 
 
@@ -31,6 +32,11 @@ public class Schedule {
     @Column(name="appointment")
     private Date appointment;
 
+    @ElementCollection
+    @CollectionTable(name="available_days", joinColumns = @JoinColumn(name="schedule_id"))
+    @Column(name="schedule_available_days")
+    private Set<DayOfWeek> days = new HashSet<>();
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pet_id")
     private Pet pet;
@@ -44,6 +50,7 @@ public class Schedule {
 
     public Schedule() {
     }
+
 
 
     public Long getScheduleId() {
@@ -69,5 +76,21 @@ public class Schedule {
 
     public void setPet(Pet pet) {
         this.pet = pet;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public Set<DayOfWeek> getDays() {
+        return days;
+    }
+
+    public void setDays(Set<DayOfWeek> days) {
+        this.days = days;
     }
 }
