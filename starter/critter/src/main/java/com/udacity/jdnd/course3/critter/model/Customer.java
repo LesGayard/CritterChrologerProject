@@ -1,45 +1,51 @@
 package com.udacity.jdnd.course3.critter.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.udacity.jdnd.course3.critter.dto.Views;
 import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 @Table(name="customer")
 public class Customer {
+
+    @JsonView(Views.Public.class)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="customer_id")
     private Long customerId;
 
+    @JsonView(Views.Public.class)
     @Column(name="name", length=255)
     @Nationalized
     private String name;
 
-    @Column(name="phone_number", length=9)
+    @JsonView(Views.Public.class)
+    @Column(name="phone_number")
     private String phoneNumber;
 
+    @JsonView(Views.Public.class)
     @Column(name="notes", length=255)
     private String notes;
 
-
-
-    @OneToOne(targetEntity = Pet.class)
+    @JsonView(Views.Public.class)
+    @ManyToOne(targetEntity = Pet.class)
     @JoinColumn(name="pet_id")
-    private Pet pet;
+    private List<Long>petIds;
 
 
 
     public Customer() {
     }
 
-    public Customer(Long customerId, String name, String phoneNumber, String notes, Pet pet) {
+    public Customer(Long customerId, String name, String phoneNumber, String notes, List<Long> petIds) {
         this.customerId = customerId;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.notes = notes;
-        this.pet = pet;
+        this.petIds = petIds;
     }
 
     public Long getCustomerId() {
@@ -74,14 +80,11 @@ public class Customer {
         this.notes = notes;
     }
 
-    public Pet getPet() {
-        return this.pet;
+    public List<Long> getPetIds() {
+        return petIds;
     }
 
-    public void setPet(Pet pet) {
-        this.pet = pet;
+    public void setPetIds(List<Long> petIds) {
+        this.petIds = petIds;
     }
-
-
-
 }

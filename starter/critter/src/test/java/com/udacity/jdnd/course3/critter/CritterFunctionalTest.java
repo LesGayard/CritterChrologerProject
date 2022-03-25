@@ -45,7 +45,19 @@ public class CritterFunctionalTest {
     @Test
     public void testCreateCustomer(){
         CustomerDTO customerDTO = createCustomerDTO();
+        System.out.println("new customer as : " + customerDTO.getName() + " ID : " + customerDTO.getId());
+
+        CustomerDTO customerDTO1 = new CustomerDTO();
+        customerDTO1.setName("the new");
+        System.out.println("theother one : " + customerDTO1.getName());
+
+
+
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
+        System.out.println("Customer save : " + newCustomer.getName() + "Customer id : " + newCustomer.getId());
+
+        CustomerDTO other = userController.saveCustomer(customerDTO1);
+        System.out.println("the other : " + other.getName() + "ID : " + other.getId() );
         CustomerDTO retrievedCustomer = userController.getAllCustomers().get(0);
         Assertions.assertEquals(newCustomer.getName(), customerDTO.getName());
         Assertions.assertEquals(newCustomer.getId(), retrievedCustomer.getId());
@@ -63,7 +75,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testAddPetsToCustomer() {
+    public void testAddPetsToCustomer(){
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
@@ -249,7 +261,7 @@ public class CritterFunctionalTest {
     }
     private static CustomerDTO createCustomerDTO() {
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setName("TestEmployee");
+        customerDTO.setName("TestCustomer");
         customerDTO.setPhoneNumber("123-456-789");
         return customerDTO;
     }
