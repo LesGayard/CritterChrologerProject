@@ -1,21 +1,24 @@
 package com.udacity.jdnd.course3.critter.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+
 import com.udacity.jdnd.course3.critter.dto.CustomerDTO;
 import com.udacity.jdnd.course3.critter.dto.EmployeeDTO;
 import com.udacity.jdnd.course3.critter.dto.EmployeeRequestDTO;
 import com.udacity.jdnd.course3.critter.dto.Views;
 import com.udacity.jdnd.course3.critter.model.Customer;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+
 
 /**
  * Handles web requests related to Users.
@@ -36,28 +39,39 @@ public class UserController {
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
         //throw new UnsupportedOperationException();
-        Customer customer = new Customer(customerDTO.getId(),customerDTO.getName(),customerDTO.getPhoneNumber(),customerDTO.getNotes(),customerDTO.getPetIds());
-        /* creation of a customer */
-        //Customer customerCreated = this.customerService.createCustomer(customer);
-        //Customer customerToSave = new Customer();
+        Long id = Optional.ofNullable(customerDTO.getId()).orElse(Long.valueOf(-1));
+        Customer customer = new Customer(id,customerDTO.getName(),customerDTO.getPhoneNumber(),customerDTO.getNotes(),customerDTO.getPetIds());
+        System.out.println("test : " + customerDTO.getId() + "name : " + customerDTO.getName());
         try{
-             this.customerService.saveCustomer(customer);
+            this.customerService.saveCustomer(customer);
+
+            System.out.println("count the entities : " + this.customerService.countCustomers());
+
+
         }catch (UnsupportedOperationException ex){
             System.out.println(ex.getLocalizedMessage());}
         return this.convertCustomerToCustomerDTO(customer);
     }
 
+
     @JsonView(Views.class)
     @GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers(){
         //throw new UnsupportedOperationException();
-        Iterable<Customer> customers = new ArrayList<>();
+        List<CustomerDTO> result = new ArrayList<>();
+        ArrayList<Customer> customersToConvert;
         try{
-           customers = this.customerService.findAllCustomers();
+            customersToConvert = this.customerService.findAllCustomers();
+            customersToConvert.forEach(customer -> System.out.println("all the customer before conversion : " + customer.getName() + " BE4 ID : " + customer.getCustomerId()));
+
+            result = collectionConvertCustomerToCustomerDTO(customersToConvert);
+            result.forEach(result01 -> System.out.println("After conversion Id : " + result01.getId()));
+           System.out.println("final size test : " + result.size());
+
        }catch(UnsupportedOperationException ex){
             ex.getLocalizedMessage();
         }
-        return this.collectionConvertCustomerToCustomerDTO(customers);
+        return result;
 
     }
 
@@ -87,6 +101,8 @@ public class UserController {
     }
 
     /* HELPER METHODS */
+
+
     private CustomerDTO convertCustomerToCustomerDTO(Customer customer){
         CustomerDTO customerDTO= new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
@@ -94,14 +110,21 @@ public class UserController {
     }
 
     private Customer convertCustomerDTOToCustomer(CustomerDTO customerDTO){
-        Customer customer = new Customer(customerDTO.getId(),customerDTO.getName(),customerDTO.getPhoneNumber(),customerDTO.getNotes(),customerDTO.getPetIds());
+        Customer customer = new Customer();
         BeanUtils.copyProperties(customerDTO,customer);
         return customer;
     }
 
-    private List<CustomerDTO> collectionConvertCustomerToCustomerDTO(Iterable<Customer> customers){
-        List<CustomerDTO> customerDTOS = new ArrayList<CustomerDTO>();
-        BeanUtils.copyProperties(customers,customerDTOS);
+    private List<CustomerDTO>collectionConvertCustomerToCustomerDTO(ArrayList<Customer>customers){
+        List<CustomerDTO>customerDTOS = new ArrayList<>();
+
+        customers.forEach(
+            customer -> {
+                customerDTOS.add(convertCustomerToCustomerDTO(customer));
+            }
+        );
+        //customerDTOS.forEach(customerDTO -> System.out.println("Helper method costumers : " + customerDTO.getName()));
+        //System.out.println("Helper method customers size : " + customerDTOS.size());
         return customerDTOS;
     }
 

@@ -87,4 +87,9 @@ public class Customer {
     public void setPetIds(List<Long> petIds) {
         this.petIds = petIds;
     }
+
+    /* HELPER METHODS */
+    public List<Customer> getcustomer(){
+        return List.of(this.getcustomer().toArray(new Customer[0]));
+    }
 }

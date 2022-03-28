@@ -7,6 +7,10 @@ import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CustomerService {
 
@@ -19,14 +23,7 @@ public class CustomerService {
     }
 
     /* CREATE A NEW CUSTOMER */
-   /* public Customer createCustomer( Customer customer){
-        Customer customer1 = new Customer();
-        customer1.setName(customer.getName());
-        customer1.setPhoneNumber(customer.getPhoneNumber());
-        customer1.setNotes(customer.getNotes());
-        customer1.setPetIds(customer.getPetIds());
-        return customer1;
-    }*/
+
 
     /* SAVE A CUSTOMER */
     public Customer saveCustomer(Customer customer){
@@ -38,10 +35,16 @@ public class CustomerService {
         return this.customerRepository.findById(id).get();
     }
 
-    public Iterable<Customer> findAllCustomers(){
-        return this.customerRepository.findAll();
+    public ArrayList<Customer> findAllCustomers(){
+
+        return (ArrayList<Customer>) this.customerRepository.findAll();
     }
 
-    /* GET OWNER BY PET */
+   /* COUNT THE ENTITIES AVAILABLE */
+    public long countCustomers(){
+        return this.customerRepository.count();
+    }
+
+
 
 }
