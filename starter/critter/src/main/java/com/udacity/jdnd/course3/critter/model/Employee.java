@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+/* NAMED QUERIES */
+/*@NamedQuery(
+        name="Employee.findById",
+        query="select Employee from Employee e where e.employeeId = :employee_id"
+)*/
+
 
 @Entity
 @Table(name="employee")
@@ -38,9 +44,11 @@ public class Employee {
     private List<Schedule> schedules = new ArrayList<>();
 
 
-
-
     public Employee() {}
+
+    public Employee(long employeeId) {
+        this.employeeId = employeeId;
+    }
 
     public Employee(long employeeId, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> days) {
         this.employeeId = employeeId;
