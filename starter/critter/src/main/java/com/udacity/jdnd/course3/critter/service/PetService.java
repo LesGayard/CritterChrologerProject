@@ -1,13 +1,17 @@
 package com.udacity.jdnd.course3.critter.service;
 
-import com.udacity.jdnd.course3.critter.model.Customer;
 import com.udacity.jdnd.course3.critter.model.Pet;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
+
 public class PetService {
 
 
@@ -17,33 +21,38 @@ public class PetService {
     @Autowired
     CustomerRepository customerRepository;
 
-    private Customer customer;
 
-
-
-
-    public PetService() {
-    }
-
-    public PetService(Customer customer) {
-        this.customer = customer;
-    }
-
-
-
-
-
-
-    /* CREATE A PET FOR A NEWLY CREATED CUSTOMER */
-    /* look for the created customer */
-    public Customer findCustomer(Long id){
-        return this.customer = this.customerRepository.findById(id).get();
-    }
-
-    public Pet createPet(Pet pet){
-        pet.setCustomer(this.customer);
+   /* SAVE A PET */
+    public Pet savePet(Pet pet){
         return this.petRepository.save(pet);
     }
+
+    /* COUNT THE ENTITES */
+    public long countPets(){
+        return this.petRepository.count();
+    }
+
+    /* GET PET BY ID */
+    public Pet findPetById(long id){
+        System.out.println("Pet service layer id : " + id);
+        return this.petRepository.findById(id).orElse(new Pet());
+    }
+
+    /* GET ALL THE PETS */
+    public List<Pet> getAllPets(){
+        return (List<Pet>) this.petRepository.findAll();
+    }
+
+
+    /* GET ALL PETS BY CUSTOMER ID */
+    @Transactional
+    public ArrayList<Pet>findPetsByCustomerId(Long customerId){
+        ArrayList<Pet> result = new ArrayList<>();
+        result = this.petRepository.findByCustomerId(customerId);
+        return result;
+    }
+
+
 
 
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CustomerService {
@@ -32,7 +31,7 @@ public class CustomerService {
 
     /* look for the created customer */
     public Customer findCustomer(Long id){
-        return this.customerRepository.findById(id).get();
+        return this.customerRepository.findById(id).orElse(new Customer());
     }
 
     public ArrayList<Customer> findAllCustomers(){

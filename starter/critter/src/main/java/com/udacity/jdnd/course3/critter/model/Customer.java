@@ -1,5 +1,7 @@
 package com.udacity.jdnd.course3.critter.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.udacity.jdnd.course3.critter.dto.Views;
 import org.hibernate.annotations.Nationalized;
@@ -11,9 +13,9 @@ import java.util.List;
 @Table(name="customer")
 public class Customer {
 
-    @JsonView(Views.Public.class)
+    //@JsonView(Views.Public.class)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="customer_id")
     private Long customerId;
 
@@ -30,17 +32,25 @@ public class Customer {
     @Column(name="notes", length=255)
     private String notes;
 
-    @JsonView(Views.Public.class)
-    @ManyToOne(targetEntity = Pet.class)
+    @JsonIgnoreProperties("customer")
+    @JsonBackReference
+    @OneToMany(targetEntity = Pet.class)
     @JoinColumn(name="pet_id")
-    private List<Long>petIds;
+    private List<Pet>petIds;
 
 
 
     public Customer() {
     }
 
-    public Customer(Long customerId, String name, String phoneNumber, String notes, List<Long> petIds) {
+    public Customer(Long customerId, String name, String phoneNumber, String notes) {
+        this.customerId = customerId;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.notes = notes;
+    }
+
+    public Customer(Long customerId, String name, String phoneNumber, String notes, List<Pet> petIds) {
         this.customerId = customerId;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -48,8 +58,10 @@ public class Customer {
         this.petIds = petIds;
     }
 
+
+
     public Long getCustomerId() {
-        return customerId;
+        return this.customerId;
     }
 
     public void setCustomerId(Long customerId) {
@@ -80,16 +92,18 @@ public class Customer {
         this.notes = notes;
     }
 
-    public List<Long> getPetIds() {
+    public List<Pet> getPetIds() {
         return petIds;
     }
 
-    public void setPetIds(List<Long> petIds) {
+    public void setPetIds(List<Pet> petIds) {
         this.petIds = petIds;
     }
 
+
+
     /* HELPER METHODS */
-    public List<Customer> getcustomer(){
+    /*public List<Customer> getcustomer(){
         return List.of(this.getcustomer().toArray(new Customer[0]));
-    }
+    }*/
 }

@@ -1,5 +1,10 @@
 package com.udacity.jdnd.course3.critter.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.udacity.jdnd.course3.critter.dto.Views;
+
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -12,26 +17,34 @@ import java.util.Set;
 @Entity
 @Table(name="pet")
 public class Pet {
+
+    @JsonView(Views.Public.class)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="pet_id")
     private Long petId;
 
+    @JsonView(Views.Public.class)
     @Enumerated(EnumType.STRING)
     @Column(name="type")
     private PetType type;
 
+    @JsonView(Views.Public.class)
     @Column(name="name")
     private String name;
 
+    @JsonView(Views.Public.class)
     @Column(name="birth_date" )
     private LocalDate birthDate;
 
+    @JsonView(Views.Public.class)
     @Column(name="notes")
     private String notes;
 
 
-    @OneToOne(targetEntity = Customer.class,cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("pet")
+    @JsonManagedReference
+    @ManyToOne(targetEntity = Customer.class)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
@@ -51,6 +64,22 @@ public class Pet {
     public Pet() {
     }
 
+    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes) {
+        this.petId = petId;
+        this.type = type;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.notes = notes;
+    }
+
+    public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer){
+        this.petId = petId;
+        this.type = type;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.notes = notes;
+        this.customer = customer;
+    }
     public Pet(Long petId, PetType type, String name, LocalDate birthDate, String notes, Customer customer, Set<DayOfWeek> days, List<Schedule> schedule) {
         this.petId = petId;
         this.type = type;

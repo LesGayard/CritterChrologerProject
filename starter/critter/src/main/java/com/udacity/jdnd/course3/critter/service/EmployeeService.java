@@ -41,8 +41,7 @@ public class EmployeeService {
 
     /* GET AN EMPLOYEE BY ITS ID  CUSTOM METHOD */
     public Employee findEmployeeById(long id) {
-        long foundId = Optional.ofNullable(id).orElse((long) -1);
-        return this.employeeRepository.findById(foundId);
+        return this.employeeRepository.findById(id).orElse(new Employee());
 
     }
 

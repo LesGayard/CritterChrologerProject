@@ -43,11 +43,13 @@ public class UserController {
     @Autowired
     private EmployeeService employeeService;
 
+
+
     @JsonView(Views.Public.class)
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
 
-        Customer customer = new Customer(customerDTO.getId(),customerDTO.getName(),customerDTO.getPhoneNumber(),customerDTO.getNotes(),customerDTO.getPetIds());
+        Customer customer = new Customer(customerDTO.getId(),customerDTO.getName(),customerDTO.getPhoneNumber(),customerDTO.getNotes());
         System.out.println("test : " + customerDTO.getId() + "name : " + customerDTO.getName());
         try{
             this.customerService.saveCustomer(customer);
@@ -89,6 +91,7 @@ public class UserController {
 
 
 
+    @JsonView(Views.class)
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         //throw new UnsupportedOperationException();
@@ -106,28 +109,17 @@ public class UserController {
 
 
 
+    @JsonView(Views.class)
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
-        System.out.println("EmployeeDTO ID : " + employeeDTO.getId());
+        Employee employee = new Employee();
 
-        Employee employee = new Employee(employeeId);
-
-
-        System.out.println("Employee ID  :  " + employee.getEmployeeId());
-        System.out.println("Test source Employee :" + employee.getName());
         try{
-            if(employee == null){
-                throw new NotFoundException("Source is null");
-            }else{
-                employeeDTO = this.converter.convertEmployeeToEmployeeDTO(employee);
-            }
-            //System.out.println("Employee ID before conversion : " + employee.getEmployeeId());
+            employee = this.employeeService.findEmployeeById(employeeId);
+            employeeDTO = this.converter.convertEmployeeToEmployeeDTO(employee);
         }catch (UnsupportedOperationException exception){
             exception.getLocalizedMessage();
-        } catch (NotFoundException e) {
-            e.getLocalizedMessage();
-            System.out.println("The source is not saved ! Cannot find it It is null");
         }
         return employeeDTO;
     }
